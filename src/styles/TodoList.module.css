@@ -2,9 +2,10 @@
   max-width: 600px;
   margin: 20px auto;
   padding: 20px;
-  background-color: white;
+  background: conic-gradient(from 60deg at 40% 30%, #40e0d0 0%, #ffffff 45%, #ffffff 55%, #40e0d0 100%);
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
 }
 
 input[type="text"].itemInput {
@@ -17,14 +18,56 @@ button.addButton {
   padding: 5px;
   background-color: #0070f3;
   color: white;
-  border: 1px solid #0070f3;
+  border: 1px solid black;
   border-radius: 5px;
   cursor: pointer;
+  font-weight: bold;
+}
+
+button.compButton {
+  padding: 5px;
+  background-color: green;
+  color: white;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.unCompButton {
+  padding: 5px;
+  background-color: yellow;
+  color: black;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+button.delButton {
+  padding: 5px;
+  background-color: red;
+  color: yellow;
+  border: 1px solid black;
+  border-radius: 5px;
+  cursor: pointer;
+  font-weight: bold;
 }
 
 button.addButton:hover {
   background-color: #fff;
   color: #0070f3;
+}
+
+.buttoncontainer {
+  display: flex;
+  justify-content: space-between; /* Distribute space evenly between buttons */
+  margin-top: 10px; /* Adjust margin as needed */
+}
+
+.buttoncontainer button {
+  flex: 1; /* Each button takes equal space */
+  margin: 0 5px; /* Add margin between buttons */
 }
 
 .todoItem {
@@ -36,4 +79,6 @@ button.addButton:hover {
 .todoText {
   margin-left: 10px;
   flex-grow: 1;
+  width: 30ch;
+  overflow: hidden;
 }

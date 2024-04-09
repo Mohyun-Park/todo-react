@@ -30,6 +30,19 @@ const TodoList = () => {
     setInput("");
   };
 
+  const complAll = (isDone) => {
+    setTodos(
+      todos.map((item) => {
+        return {...item, completed: isDone};
+      })
+    );
+  };
+
+  const delAll = () => {
+    setTodos([]);
+  };
+
+
   // toggleTodo 함수는 체크박스를 눌러 할 일의 완료 상태를 변경하는 함수입니다.
   const toggleTodo = (id) => {
     // 할 일 목록에서 해당 id를 가진 할 일의 완료 상태를 반전시킵니다.
@@ -58,7 +71,7 @@ const TodoList = () => {
   // 컴포넌트를 렌더링합니다.
   return (
     <div className={styles.container}>
-      <h1>Todo List</h1>
+      <h1>SNU Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
       <input
         type="text"
@@ -67,9 +80,20 @@ const TodoList = () => {
         onChange={(e) => setInput(e.target.value)}
       />
       {/* 할 일을 추가하는 버튼입니다. */}
-      <button className={styles.addButton} onClick={addTodo}>
-        Add Todo
-      </button>
+      <div className={styles.buttoncontainer}>
+        <button className={styles.addButton} onClick={addTodo}>
+          Add Todo
+        </button>
+        <button className={styles.compButton} onClick={() => complAll(true)}>
+          Complete All
+        </button>
+        <button className={styles.unCompButton} onClick={() => complAll(false)}>
+          Uncomplete All
+        </button>
+        <button className={styles.delButton} onClick={delAll}>
+          Delete All
+        </button>
+      </div>
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
         {todos.map((todo) => (
