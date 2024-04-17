@@ -7,6 +7,8 @@
 
 import React, { useState } from "react";
 import TodoItem from "@/components/TodoItem";
+import { Button } from "@/components/ui/button"
+import { Input } from "@/components/ui/input"
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
@@ -72,27 +74,26 @@ const TodoList = () => {
     <div class="w-4/5 items-center justify-center mx-auto">
       <h1 class="w-full text-center text-2xl font-bold">SNU Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
-      <input
-        type="text"
-        class="w-full object-center p-1 mb-2 border-2 border-solid"
-        value={input}
-        onChange={(e) => setInput(e.target.value)}
-      />
-      {/* 할 일을 추가하는 버튼입니다. */}
-      <div class="flex justify-between mt-2">
-        <button class="p-1 bg-blue-600 hover:bg-white hover:text-blue-600 text-white rounded cursor-pointer font-bold" onClick={addTodo}>
-          Add Todo
-        </button>
-        <button class="p-1 bg-green-900 text-white rounded cursor-pointer font-bold" onClick={() => complAll(true)}>
-          Complete All
-        </button>
-        <button class="p-1 bg-yellow-500 text-black rounded cursor-pointer font-bold" onClick={() => complAll(false)}>
-          Uncomplete All
-        </button>
-        <button class="p-1 bg-red-700 text-yellow-500 rounded cursor-pointer font-bold" onClick={delAll}>
-          Delete All
-        </button>
+
+      <div class="flex w-6/7 items-center space-x-2">
+        <Input type="text" placeholder="Name of job to do" value={input} onChange={(e) => setInput(e.target.value)} />
+        <Button onClick={addTodo}> Add Todo </Button>
       </div>
+     <br>
+     </br>
+      <div class="flex justify-end mt-2">
+        
+        <Button variant="secondary" onClick={() => complAll(true)}>
+          Complete All
+        </Button>
+        <Button variant="outline" onClick={() => complAll(false)}>
+          Uncomplete All
+        </Button>
+        <Button variant="destructive" onClick={delAll}>
+          Delete All
+        </Button>
+      </div>
+      <br></br>
       {/* 할 일 목록을 렌더링합니다. */}
       <ul>
         {todos.map((todo) => (
