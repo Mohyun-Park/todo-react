@@ -7,7 +7,6 @@
 
 import React, { useState } from "react";
 import TodoItem from "@/components/TodoItem";
-import styles from "@/styles/TodoList.module.css";
 
 // TodoList 컴포넌트를 정의합니다.
 const TodoList = () => {
@@ -70,27 +69,27 @@ const TodoList = () => {
 
   // 컴포넌트를 렌더링합니다.
   return (
-    <div className={styles.container}>
-      <h1>SNU Todo List</h1>
+    <div class="w-4/5 items-center justify-center mx-auto">
+      <h1 class="w-full text-center text-2xl font-bold">SNU Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
       <input
         type="text"
-        className={styles.itemInput}
+        class="w-full object-center p-1 mb-2 border-2 border-solid"
         value={input}
         onChange={(e) => setInput(e.target.value)}
       />
       {/* 할 일을 추가하는 버튼입니다. */}
-      <div className={styles.buttoncontainer}>
-        <button className={styles.addButton} onClick={addTodo}>
+      <div class="flex justify-between mt-2">
+        <button class="p-1 bg-blue-600 hover:bg-white hover:text-blue-600 text-white rounded cursor-pointer font-bold" onClick={addTodo}>
           Add Todo
         </button>
-        <button className={styles.compButton} onClick={() => complAll(true)}>
+        <button class="p-1 bg-green-900 text-white rounded cursor-pointer font-bold" onClick={() => complAll(true)}>
           Complete All
         </button>
-        <button className={styles.unCompButton} onClick={() => complAll(false)}>
+        <button class="p-1 bg-yellow-500 text-black rounded cursor-pointer font-bold" onClick={() => complAll(false)}>
           Uncomplete All
         </button>
-        <button className={styles.delButton} onClick={delAll}>
+        <button class="p-1 bg-red-700 text-yellow-500 rounded cursor-pointer font-bold" onClick={delAll}>
           Delete All
         </button>
       </div>
