@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button"
 // TodoItem 컴포넌트를 정의합니다.
 const TodoItem = ({ todo, onToggle, onDelete }) => {
   // 각 할 일 항목을 렌더링합니다.
-  const d = new Date(todo.id)
+  const d = new Date(todo.due)
   const datestring = d.toLocaleDateString()
   return (
     <li class="flex items-center justify-between mb-2 bg-gray-100 p-2 rounded shadow">
