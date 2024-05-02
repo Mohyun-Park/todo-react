@@ -19,6 +19,7 @@ import {
   addDoc,
   updateDoc,
   deleteDoc,
+  Timestamp,
   orderBy,
   where,
 } from "firebase/firestore";
@@ -37,13 +38,16 @@ const TodoList = () => {
   }, []);
 
   const getTodos = async () => {
-    const q = query(todoCollection);
+    const q = query(todoCollection, orderBy('due'));
 
     const results = await getDocs(q);
     const newTodos = [];
     
     results.docs.forEach((doc) => {
-      newTodos.push({ id: doc.id, ...doc.data()});
+      const fstimestamp = doc.data().due;
+      const fstimestampobj = new Timestamp(fstimestamp.seconds, fstimestamp.nanoseconds);
+      const duedate = fstimestampobj.toDate();
+      newTodos.push({ id: doc.id, text: doc.data().text, due: duedate.toLocaleDateString(), completed: doc.data().completed});
     });
     setTodos(newTodos);
   };
@@ -58,7 +62,8 @@ const TodoList = () => {
       {text: input, due: mydate, completed: false}
     );
     
-    setTodos([...todos, { id: docRef.id, text: input, due: mydate.toLocaleDateString(), completed: false}]);
+    // setTodos([...todos, { id: docRef.id, text: input, due: mydate.toLocaleDateString(), completed: false}]);
+    getTodos()
     setInput("");
   };
 
@@ -120,11 +125,11 @@ const TodoList = () => {
 
   // 컴포넌트를 렌더링합니다.
   return (
-    <div class="w-4/5 items-center justify-center mx-auto">
-      <h1 class="w-full text-center text-2xl font-bold">SNU Todo List</h1>
+    <div className="w-4/5 items-center justify-center mx-auto">
+      <h1 className="w-full text-center text-2xl font-bold">SNU Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
 
-      <div class="flex w-6/7 items-center space-x-2">
+      <div className="flex w-6/7 items-center space-x-2">
         <Calendar
           mode="single"
           selected={date}
@@ -136,7 +141,7 @@ const TodoList = () => {
       </div>
      <br>
      </br>
-      <div class="flex justify-end mt-2">
+      <div className="flex justify-end mt-2">
         <Button variant="secondary" onClick={() => complAll(true)}>
           Complete All
         </Button>
