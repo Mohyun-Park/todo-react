@@ -6,6 +6,8 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import TodoItem from "@/components/TodoItem";
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -33,12 +35,25 @@ const TodoList = () => {
   const [input, setInput] = useState("");
   const [date, setDate] = useState(new Date())
 
+  const router = useRouter();
+  const { data } = useSession({
+    required: true,
+    onUnauthenticated() {
+      router.replace("/login");
+    },
+  });
+
   useEffect(() => {
+    console.log("data", data);
     getTodos();
-  }, []);
+  }, [data]);
 
   const getTodos = async () => {
-    const q = query(todoCollection, orderBy('due'));
+
+    if (!data?.user?.name) return;
+
+    const q = query(todoCollection, where("userName", "==", data?.user?.name), orderBy('due'));
+    // const q = query(todoCollection, orderBy('due'));
 
     const results = await getDocs(q);
     const newTodos = [];
@@ -59,7 +74,7 @@ const TodoList = () => {
     
     // setTodos([...todos, { id: Date.now(), text: input, due: mydate, completed: false }]);
     const docRef = await addDoc(todoCollection,
-      {text: input, due: mydate, completed: false}
+      {userName: data?.user?.name, text: input, due: mydate, completed: false}
     );
     
     // setTodos([...todos, { id: docRef.id, text: input, due: mydate.toLocaleDateString(), completed: false}]);
@@ -71,7 +86,7 @@ const TodoList = () => {
     setTodos(
       todos.map((item) => {
         const todoDoc = doc(todoCollection, item.id);
-        updateDoc(todoDoc, { completed: isDone });
+        if (todoDoc.data().userName == data?.user?.name) updateDoc(todoDoc, { completed: isDone });
 
         return {...item, completed: isDone};
       })
@@ -81,7 +96,7 @@ const TodoList = () => {
   const delAll = () => {
     todos.map((item) => {
       const todoDoc = doc(todoCollection, item.id);
-      deleteDoc(todoDoc);
+      if (todoDoc.data().userName == data?.user?.name) deleteDoc(todoDoc);
     })
     setTodos([]);
   };
@@ -114,7 +129,7 @@ const TodoList = () => {
     // setTodos(todos.filter((todo) => todo.id !== id));
     
     const todoDoc = doc(todoCollection, id);
-    deleteDoc(todoDoc);
+    if (todoDoc.data().userName == data?.user?.name) deleteDoc(todoDoc);
     
     setTodos(
       todos.filter((todo) => {
@@ -126,7 +141,7 @@ const TodoList = () => {
   // 컴포넌트를 렌더링합니다.
   return (
     <div className="w-4/5 items-center justify-center mx-auto">
-      <h1 className="w-full text-center text-2xl font-bold">SNU Todo List</h1>
+      <h1 className="w-full text-center text-2xl font-bold">{data?.user?.name}'s Todo List</h1>
       {/* 할 일을 입력받는 텍스트 필드입니다. */}
 
       <div className="flex w-6/7 items-center space-x-2">
